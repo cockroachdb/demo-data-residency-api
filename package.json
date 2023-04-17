@@ -1,0 +1,24 @@
+{
+  "name": "demo-data-residency-api",
+  "version": "1.0.0",
+  "description": "A CockroachDB ...",
+  "main": "index.js",
+  "scripts": {
+    "us-east-1": "serverless deploy --region us-east-1",
+    "eu-central-1": "serverless deploy --region eu-central-1",
+    "us-west-2": "serverless deploy --region us-west-2",
+    "deploy": "npm run us-east-1 && npm run eu-central-1 && npm run us-west-2",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cockroachdb/demo-data-residency-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cockroachdb/demo-data-residency-api/issues"
+  },
+  "homepage": "https://github.com/cockroachdb/demo-data-residency-api#readme"
+}

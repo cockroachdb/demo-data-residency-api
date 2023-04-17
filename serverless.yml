@@ -1,0 +1,18 @@
+service: demo-data-residency-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  httpApi:
+    cors: true
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+
+functions:
+  api:
+    handler: v1/index.handler
+    events:
+      - httpApi:
+          path: /
+          method: GET
