@@ -41,3 +41,9 @@ functions:
       - httpApi:
           path: /artglobal
           method: POST
+  artuser:
+    handler: v1/artuser.handler
+    events:
+      - httpApi:
+          path: /artuser
+          method: POST
