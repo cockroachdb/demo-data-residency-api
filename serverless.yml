@@ -29,3 +29,15 @@ functions:
       - httpApi:
           path: /user
           method: POST
+  artlocal:
+    handler: v1/artlocal.handler
+    events:
+      - httpApi:
+          path: /artlocal
+          method: POST
+  artglobal:
+    handler: v1/artglobal.handler
+    events:
+      - httpApi:
+          path: /artglobal
+          method: POST
