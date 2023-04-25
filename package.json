@@ -6,8 +6,10 @@
   "scripts": {
     "us-east-1": "serverless deploy --region us-east-1",
     "eu-central-1": "serverless deploy --region eu-central-1",
-    "us-west-2": "serverless deploy --region us-west-2",
-    "deploy": "npm run us-east-1 && npm run eu-central-1 && npm run us-west-2",
+    "deploy": "npm run us-east-1 && npm run eu-central-1",
+    "us-east-1:prod": "serverless --stage production deploy --region us-east-1",
+    "eu-central-1:prod": "serverless --stage production deploy --region eu-central-1",
+    "deploy:prod": "npm run us-east-1:prod && npm run eu-central-1:prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +22,11 @@
   "bugs": {
     "url": "https://github.com/cockroachdb/demo-data-residency-api/issues"
   },
-  "homepage": "https://github.com/cockroachdb/demo-data-residency-api#readme"
+  "homepage": "https://github.com/cockroachdb/demo-data-residency-api#readme",
+  "dependencies": {
+    "pg": "^8.10.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.30.1"
+  }
 }

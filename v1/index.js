@@ -5,8 +5,7 @@ module.exports.handler = async (event, context) => {
       {
         message: 'Index v1 - A Ok!',
         region: process.env.AWS_REGION,
-        event: event,
-        context: context,
+        cockroach_region: `aws-${process.env.AWS_REGION}`,
       },
       null,
       2

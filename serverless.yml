@@ -1,3 +1,4 @@
+useDotenv: true
 service: demo-data-residency-api
 frameworkVersion: '3'
 
@@ -15,4 +16,10 @@ functions:
     events:
       - httpApi:
           path: /
+          method: GET
+  gallery:
+    handler: v1/gallery.handler
+    events:
+      - httpApi:
+          path: /gallery
           method: GET
