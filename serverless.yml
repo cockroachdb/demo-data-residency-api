@@ -23,3 +23,9 @@ functions:
       - httpApi:
           path: /gallery
           method: GET
+  user:
+    handler: v1/user.handler
+    events:
+      - httpApi:
+          path: /user
+          method: POST

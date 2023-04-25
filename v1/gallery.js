@@ -1,6 +1,6 @@
 const { getDB } = require('../pg');
 
-module.exports.handler = async (event, context) => {
+module.exports.handler = async () => {
   const client = await getDB().connect();
 
   const region = `aws-${process.env.AWS_REGION}`;
