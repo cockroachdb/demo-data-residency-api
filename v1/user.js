@@ -1,14 +1,15 @@
-const { getDB } = require('../pg');
+const { client } = require('../pg');
 
 module.exports.handler = async (event, context) => {
-  context.callbackWaitsForEmptyEventLoop = false; // !important to reuse pool
-  const client = await getDB().connect();
-
   const { user_id } = JSON.parse(event.body);
 
   try {
+    await client.connect();
+
     const local_response = await client.query('SELECT * FROM art_local WHERE user_id = $1', [user_id]);
     const global_response = await client.query('SELECT * FROM art_global WHERE user_id = $1', [user_id]);
+
+    await client.clean();
 
     if (!local_response.rows || !global_response.rows) {
       throw new Error();
@@ -56,7 +57,5 @@ module.exports.handler = async (event, context) => {
       statusCode: 500,
       body: JSON.stringify(error, null, 2),
     };
-  } finally {
-    client.release();
   }
 };

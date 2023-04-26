@@ -1,18 +1,18 @@
-const { getDB } = require('../pg');
+const { client } = require('../pg');
 
 module.exports.handler = async (event, context) => {
-  context.callbackWaitsForEmptyEventLoop = false; // !important to reuse pool
-  const client = await getDB().connect();
-
   const { user_id } = JSON.parse(event.body);
-
   const region = `aws-${process.env.AWS_REGION}`;
 
   try {
+    await client.connect();
+
     const response = await client.query(
       'SELECT l.user_id, l.username, l.region, l.last_updated AS local_last_update, l.values AS local_values, g.last_updated AS global_last_update, g.values AS global_values FROM art_local l LEFT JOIN art_global g ON l.user_id = g.user_id WHERE l.user_id = $1 AND region = $2',
       [user_id, region]
     );
+
+    await client.clean();
 
     if (!response.rows) {
       throw new Error();
@@ -52,7 +52,5 @@ module.exports.handler = async (event, context) => {
       statusCode: 500,
       body: JSON.stringify(error, null, 2),
     };
-  } finally {
-    client.release();
   }
 };
