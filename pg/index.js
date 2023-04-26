@@ -8,7 +8,9 @@ const getDB = () => {
   if (!pool) {
     pool = new Pool({
       connectionString,
-      max: 1,
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
     });
   }
 
