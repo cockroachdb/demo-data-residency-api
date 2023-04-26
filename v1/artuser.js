@@ -50,14 +50,7 @@ module.exports.handler = async (event, context) => {
   } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify(
-        {
-          message: 'Art User - Error!',
-          error: error.message,
-        },
-        null,
-        2
-      ),
+      body: JSON.stringify(error, null, 2),
     };
   } finally {
     client.release();

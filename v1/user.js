@@ -54,16 +54,7 @@ module.exports.handler = async (event, context) => {
   } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify(
-        {
-          message: 'User - Error!',
-          region: process.env.AWS_REGION,
-          cockroach_region: `aws-${process.env.AWS_REGION}`,
-          error: error.message,
-        },
-        null,
-        2
-      ),
+      body: JSON.stringify(error, null, 2),
     };
   } finally {
     client.release();
