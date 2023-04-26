@@ -10,7 +10,7 @@ module.exports.handler = async (event) => {
     const global_response = await client.query('SELECT * FROM art_global WHERE user_id = $1', [user_id]);
 
     if (!local_response.rows || !global_response.rows) {
-      throw new Error('Bad Response');
+      throw new Error();
     }
 
     const local = local_response.rows.reduce(

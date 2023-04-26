@@ -14,7 +14,7 @@ module.exports.handler = async (event) => {
     );
 
     if (!response.rows) {
-      throw new Error('Bad Response');
+      throw new Error();
     }
 
     return {

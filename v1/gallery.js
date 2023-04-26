@@ -12,7 +12,7 @@ module.exports.handler = async () => {
     );
 
     if (!response.rows) {
-      throw new Error('Bad Response');
+      throw new Error();
     }
 
     const newResponse = response.rows.map((data) => {
