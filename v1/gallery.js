@@ -1,6 +1,7 @@
 const { getDB } = require('../pg');
 
-module.exports.handler = async () => {
+module.exports.handler = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false; // !important to reuse pool
   const client = await getDB().connect();
 
   const region = `aws-${process.env.AWS_REGION}`;

@@ -1,6 +1,7 @@
 const { getDB } = require('../pg');
 
-module.exports.handler = async (event) => {
+module.exports.handler = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false; // !important to reuse pool
   const client = await getDB().connect();
 
   const { user_id } = JSON.parse(event.body);
