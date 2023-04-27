@@ -12,6 +12,8 @@ module.exports.handler = async (event, context) => {
       [user_id, region]
     );
 
+    console.log('artuser - response: ', response);
+
     await client.clean();
 
     if (!response.rows) {

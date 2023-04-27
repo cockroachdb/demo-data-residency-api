@@ -9,6 +9,9 @@ module.exports.handler = async (event, context) => {
     const local_response = await client.query('SELECT * FROM art_local WHERE user_id = $1', [user_id]);
     const global_response = await client.query('SELECT * FROM art_global WHERE user_id = $1', [user_id]);
 
+    console.log('user - local_response: ', local_response);
+    console.log('user - global_response: ', global_response);
+
     await client.clean();
 
     if (!local_response.rows || !global_response.rows) {

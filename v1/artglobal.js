@@ -11,6 +11,8 @@ module.exports.handler = async (event, context) => {
       [user_id, username, last_updated, values]
     );
 
+    console.log('artglobal - response: ', response);
+
     await client.clean();
 
     if (!response.rows) {

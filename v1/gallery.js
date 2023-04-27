@@ -11,6 +11,8 @@ module.exports.handler = async (event, context) => {
       [region]
     );
 
+    console.log('gallery - response: ', response);
+
     await client.clean();
 
     if (!response.rows) {
