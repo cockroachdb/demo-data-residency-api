@@ -2,6 +2,20 @@ useDotenv: true
 service: demo-data-residency-api
 frameworkVersion: '3'
 
+plugins:
+  - serverless-plugin-warmup
+
+custom:
+  warmup:
+    officeHoursWarmer:
+      roleName: demo-data-residency-api-dev-${env:AWS_REGION}-warmer
+      enabled: true
+      events:
+        - schedule: cron(0/1 0-23 ? * MON-SUN *)
+      concurrency: 6
+      verbose: false
+      logRetentionInDays: 7
+
 provider:
   name: aws
   runtime: nodejs18.x
@@ -13,36 +27,54 @@ provider:
 functions:
   api:
     handler: v1/index.handler
+    memorySize: 256
+    timeout: 20
+    provisionedConcurrency: 3
     events:
       - httpApi:
           path: /
           method: GET
   gallery:
     handler: v1/gallery.handler
+    memorySize: 256
+    timeout: 20
+    provisionedConcurrency: 3
     events:
       - httpApi:
           path: /gallery
           method: GET
   user:
     handler: v1/user.handler
+    memorySize: 256
+    timeout: 20
+    provisionedConcurrency: 3
     events:
       - httpApi:
           path: /user
           method: POST
   artlocal:
     handler: v1/artlocal.handler
+    memorySize: 256
+    timeout: 20
+    provisionedConcurrency: 3
     events:
       - httpApi:
           path: /artlocal
           method: POST
   artglobal:
     handler: v1/artglobal.handler
+    memorySize: 256
+    timeout: 20
+    provisionedConcurrency: 3
     events:
       - httpApi:
           path: /artglobal
           method: POST
   artuser:
     handler: v1/artuser.handler
+    memorySize: 256
+    timeout: 20
+    provisionedConcurrency: 3
     events:
       - httpApi:
           path: /artuser
