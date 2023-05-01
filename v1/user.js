@@ -16,6 +16,12 @@ module.exports.handler = async (event, context) => {
     if (!local_response.rows || !global_response.rows) {
       return {
         statusCode: 404,
+        headers: {
+          'Access-Control-Allow-Headers': '*',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': '*',
+        },
+        body: JSON.stringify({ message: 'User v1 Error' }),
       };
     }
 

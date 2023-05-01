@@ -18,6 +18,12 @@ module.exports.handler = async (event, context) => {
     if (!response.rows) {
       return {
         statusCode: 404,
+        headers: {
+          'Access-Control-Allow-Headers': '*',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': '*',
+        },
+        body: JSON.stringify({ message: 'Gallery v1 Error' }),
       };
     }
 
