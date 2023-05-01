@@ -3,50 +3,70 @@ const { client } = require('../pg');
 module.exports.handler = async (event, context) => {
   const { user_id } = JSON.parse(event.body);
 
-  await client.connect();
+  console.log('start request: ', new Date());
 
-  const local_response = await client.query('SELECT * FROM art_local WHERE user_id = $1', [user_id]);
-  const global_response = await client.query('SELECT * FROM art_global WHERE user_id = $1', [user_id]);
+  try {
+    await client.connect();
 
-  await client.clean();
+    const local_response = await client.query('SELECT * FROM art_local WHERE user_id = $1', [user_id]);
+    const global_response = await client.query('SELECT * FROM art_global WHERE user_id = $1', [user_id]);
 
-  if (!local_response.rows || !global_response.rows) {
-    return {
-      statusCode: 404,
-    };
-  }
+    await client.clean();
 
-  const local = local_response.rows.reduce(
-    (items, item) => {
-      const { super_region, values } = item;
+    if (!local_response.rows || !global_response.rows) {
+      return {
+        statusCode: 404,
+      };
+    }
 
-      items[super_region] = items[super_region] || {};
+    const local = local_response.rows.reduce(
+      (items, item) => {
+        const { super_region, values } = item;
 
-      items[super_region] = {
+        items[super_region] = items[super_region] || {};
+
+        items[super_region] = {
+          ...values,
+        };
+
+        return items;
+      },
+      { us: null, eu: null }
+    );
+
+    const global = global_response.rows.reduce((items, item) => {
+      const { values } = item;
+      items.global = items.global || [];
+
+      items.global = {
         ...values,
       };
 
       return items;
-    },
-    { us: null, eu: null }
-  );
+    }, {});
 
-  const global = global_response.rows.reduce((items, item) => {
-    const { values } = item;
-    items.global = items.global || [];
-
-    items.global = {
-      ...values,
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': '*',
+      },
+      body: JSON.stringify({
+        message: 'User v1 - A Ok!',
+        data: { local, ...global },
+      }),
     };
-
-    return items;
-  }, {});
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'User v1 - A Ok!',
-      data: { local, ...global },
-    }),
-  };
+  } catch (error) {
+    console.error(error);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': '*',
+      },
+      body: JSON.stringify({ message: 'User v1 Error', error }),
+    };
+  }
 };
