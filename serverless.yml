@@ -18,41 +18,23 @@ custom:
 
 provider:
   name: aws
+  endpointType: REGIONAL
+  apiGateway:
+    metrics: true
+  tracing:
+    lambda: true
+    apiGateway: true
   runtime: nodejs18.x
   environment:
     DATABASE_URL: ${env:DATABASE_URL}
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - lambda:InvokeAsync
-            - lambda:InvokeFunction
-          Resource: '*'
-
-# https://gist.github.com/sdomagala/a647a69f0dd87af545d7c45dfc7b0114
-resources:
-  Resources:
-    IamRoleLambdaExecution:
-      Type: AWS::IAM::Role
-      Properties:
-        AssumeRolePolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Principal:
-                Service:
-                  - sqs.amazonaws.com
-                  - lambda.amazonaws.com
-                  - apigateway.amazonaws.com
-              Action: sts:AssumeRole
 
 functions:
   api:
     handler: v1/index.handler
-    memorySize: 256
-    timeout: 120
-    provisionedConcurrency: 3
+    memorySize: 128
+    timeout: 30
+    maximumEventAge: 7200
+    maximumRetryAttempts: 1
     events:
       - http:
           cors: true
@@ -60,51 +42,91 @@ functions:
           method: GET
   gallery:
     handler: v1/gallery.handler
-    memorySize: 256
-    timeout: 120
-    provisionedConcurrency: 3
+    memorySize: 128
+    timeout: 30
+    maximumEventAge: 7200
+    maximumRetryAttempts: 1
     events:
       - http:
           cors: true
           path: /gallery
           method: GET
+      - schedule:
+          name: gallery-warmer
+          rate: rate(5 minutes)
+          enabled: true
+          input:
+            warmer: true
+            concurrency: 1
   user:
     handler: v1/user.handler
-    memorySize: 256
-    timeout: 120
-    provisionedConcurrency: 3
+    memorySize: 128
+    timeout: 30
+    maximumEventAge: 7200
+    maximumRetryAttempts: 1
     events:
       - http:
           cors: true
           path: /user
           method: POST
+      - schedule:
+          name: user-warmer
+          rate: rate(5 minutes)
+          enabled: true
+          input:
+            warmer: true
+            concurrency: 1
   artlocal:
     handler: v1/artlocal.handler
-    memorySize: 256
-    timeout: 120
-    provisionedConcurrency: 3
+    memorySize: 128
+    timeout: 30
+    maximumEventAge: 7200
+    maximumRetryAttempts: 1
     events:
       - http:
           cors: true
           path: /artlocal
           method: POST
+      - schedule:
+          name: artlocal-warmer
+          rate: rate(5 minutes)
+          enabled: true
+          input:
+            warmer: true
+            concurrency: 1
   artglobal:
     handler: v1/artglobal.handler
-    memorySize: 256
-    timeout: 120
-    provisionedConcurrency: 3
+    memorySize: 128
+    timeout: 30
+    maximumEventAge: 7200
+    maximumRetryAttempts: 1
     events:
       - http:
           cors: true
           path: /artglobal
           method: POST
+      - schedule:
+          name: artglobal-warmer
+          rate: rate(5 minutes)
+          enabled: true
+          input:
+            warmer: true
+            concurrency: 1
   artuser:
     handler: v1/artuser.handler
-    memorySize: 256
-    timeout: 120
-    provisionedConcurrency: 3
+    memorySize: 128
+    timeout: 30
+    maximumEventAge: 7200
+    maximumRetryAttempts: 1
     events:
       - http:
           cors: true
           path: /artuser
           method: POST
+      - schedule:
+          name: artuser-warmer
+          rate: rate(5 minutes)
+          enabled: true
+          input:
+            warmer: true
+            concurrency: 1

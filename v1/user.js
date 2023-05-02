@@ -1,17 +1,24 @@
 const { client } = require('../pg');
+const warmer = require('lambda-warmer');
 
 module.exports.handler = async (event, context) => {
+  if (await warmer(event)) {
+    console.log('------ [user.handler] warmed ------');
+    return 'warmed';
+  }
+
   const { user_id } = JSON.parse(event.body);
 
-  console.log('start request: ', new Date());
-
   try {
+    const db_start = performance.now();
     await client.connect();
 
     const local_response = await client.query('SELECT * FROM art_local WHERE user_id = $1', [user_id]);
     const global_response = await client.query('SELECT * FROM art_global WHERE user_id = $1', [user_id]);
 
     await client.clean();
+
+    const db_end = performance.now();
 
     if (!local_response.rows || !global_response.rows) {
       return {
@@ -22,6 +29,7 @@ module.exports.handler = async (event, context) => {
           'Access-Control-Allow-Methods': '*',
         },
         body: JSON.stringify({ message: 'User v1 Error' }),
+        isBase64Encoded: FALSE,
       };
     }
 
@@ -61,6 +69,11 @@ module.exports.handler = async (event, context) => {
       body: JSON.stringify({
         message: 'User v1 - A Ok!',
         data: { local, ...global },
+        metrics: {
+          db_start,
+          db_end,
+          db_total: db_end - db_start,
+        },
       }),
     };
   } catch (error) {

@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/cockroachdb/demo-data-residency-api#readme",
   "dependencies": {
+    "lambda-warmer": "^2.0.0",
     "serverless-postgres": "^2.0.2"
   },
   "devDependencies": {

@@ -1,12 +1,17 @@
 const { client } = require('../pg');
+const warmer = require('lambda-warmer');
 
 module.exports.handler = async (event, context) => {
+  if (await warmer(event)) {
+    console.log('------ [artlocal.handler] warmed ------');
+    return 'warmed';
+  }
+
   const { user_id, username, region, values } = JSON.parse(event.body);
   const last_updated = new Date();
 
-  console.log('start request: ', new Date());
-
   try {
+    const db_start = performance.now();
     await client.connect();
 
     const response = await client.query(
@@ -15,6 +20,8 @@ module.exports.handler = async (event, context) => {
     );
 
     await client.clean();
+
+    const db_end = performance.now();
 
     if (!response.rows) {
       return {
@@ -25,6 +32,7 @@ module.exports.handler = async (event, context) => {
           'Access-Control-Allow-Methods': '*',
         },
         body: JSON.stringify({ message: 'Art Local v1 Error' }),
+        isBase64Encoded: FALSE,
       };
     }
 
@@ -37,6 +45,11 @@ module.exports.handler = async (event, context) => {
       },
       body: JSON.stringify({
         message: 'Art Local v1 - A Ok!',
+        metrics: {
+          db_start,
+          db_end,
+          db_total: db_end - db_start,
+        },
       }),
     };
   } catch (error) {

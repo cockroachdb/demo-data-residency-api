@@ -1637,6 +1637,11 @@ keyv@^4.0.0:
   dependencies:
     json-buffer "3.0.1"
 
+lambda-warmer@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/lambda-warmer/-/lambda-warmer-2.0.0.tgz#87feb4b0713648bb4f8c911e9dfb9c335969810d"
+  integrity sha512-5uow3r6R5Xu9itMSnD4Jj/loOqQyHeG+swNGFuaVhCQlP5ku6wp6//kUyf+6roWnWsuLC/lYDH+sR2rgVE/O1w==
+
 lazystream@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/lazystream/-/lazystream-1.0.1.tgz#494c831062f1f9408251ec44db1cba29242a2638"

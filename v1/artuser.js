@@ -1,12 +1,17 @@
 const { client } = require('../pg');
+const warmer = require('lambda-warmer');
 
 module.exports.handler = async (event, context) => {
+  if (await warmer(event)) {
+    console.log('------ [artuser.handler] warmed ------');
+    return 'warmed';
+  }
+
   const { user_id } = JSON.parse(event.body);
   const region = `aws-${process.env.AWS_REGION}`;
 
-  console.log('start request: ', new Date());
-
   try {
+    const db_start = performance.now();
     await client.connect();
 
     const response = await client.query(
@@ -16,15 +21,18 @@ module.exports.handler = async (event, context) => {
 
     await client.clean();
 
+    const db_end = performance.now();
+
     if (!response.rows) {
       return {
         statusCode: 404,
         headers: {
-          'Access-Control-Allow-Headers': '*',
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
           'Access-Control-Allow-Methods': '*',
         },
         body: JSON.stringify({ message: 'Art User v1 Error' }),
+        isBase64Encoded: FALSE,
       };
     }
 
@@ -47,8 +55,8 @@ module.exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Headers': '*',
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Methods': '*',
       },
       body: JSON.stringify({
@@ -56,6 +64,11 @@ module.exports.handler = async (event, context) => {
         region: process.env.AWS_REGION,
         cockroach_region: `aws-${process.env.AWS_REGION}`,
         data: newResponse,
+        metrics: {
+          db_start,
+          db_end,
+          db_total: db_end - db_start,
+        },
       }),
     };
   } catch (error) {
@@ -63,8 +76,8 @@ module.exports.handler = async (event, context) => {
     return {
       statusCode: 500,
       headers: {
-        'Access-Control-Allow-Headers': '*',
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Methods': '*',
       },
       body: JSON.stringify({ message: 'Art User v1 Error', error }),
