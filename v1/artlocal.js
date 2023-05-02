@@ -11,7 +11,6 @@ module.exports.handler = async (event, context) => {
   const last_updated = new Date();
 
   try {
-    const db_start = performance.now();
     await client.connect();
 
     const response = await client.query(
@@ -20,8 +19,6 @@ module.exports.handler = async (event, context) => {
     );
 
     await client.clean();
-
-    const db_end = performance.now();
 
     if (!response.rows) {
       return {
@@ -45,11 +42,6 @@ module.exports.handler = async (event, context) => {
       },
       body: JSON.stringify({
         message: 'Art Local v1 - A Ok!',
-        metrics: {
-          db_start,
-          db_end,
-          db_total: db_end - db_start,
-        },
       }),
     };
   } catch (error) {

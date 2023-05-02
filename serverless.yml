@@ -27,6 +27,14 @@ provider:
   runtime: nodejs18.x
   environment:
     DATABASE_URL: ${env:DATABASE_URL}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - lambda:InvokeAsync
+            - lambda:InvokeFunction
+          Resource: '*'
 
 functions:
   api:
