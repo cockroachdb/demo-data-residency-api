@@ -1,9 +1,10 @@
 const { client } = require('../pg');
+const { headers } = require('../utils');
 const warmer = require('lambda-warmer');
 
 module.exports.handler = async (event, context) => {
   if (await warmer(event)) {
-    console.log('------ [user.handler] warmed ------');
+    console.log('user warmed');
     return 'warmed';
   }
 
@@ -20,13 +21,8 @@ module.exports.handler = async (event, context) => {
     if (!local_response.rows || !global_response.rows) {
       return {
         statusCode: 404,
-        headers: {
-          'Access-Control-Allow-Headers': '*',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': '*',
-        },
+        headers: headers,
         body: JSON.stringify({ message: 'User v1 Error' }),
-        isBase64Encoded: FALSE,
       };
     }
 
@@ -58,11 +54,7 @@ module.exports.handler = async (event, context) => {
 
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': '*',
-      },
+      headers: headers,
       body: JSON.stringify({
         message: 'User v1 - A Ok!',
         data: { local, ...global },
@@ -72,11 +64,7 @@ module.exports.handler = async (event, context) => {
     console.error(error);
     return {
       statusCode: 500,
-      headers: {
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': '*',
-      },
+      headers: headers,
       body: JSON.stringify({ message: 'User v1 Error', error }),
     };
   }

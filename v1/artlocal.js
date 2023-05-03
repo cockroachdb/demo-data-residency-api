@@ -1,9 +1,10 @@
 const { client } = require('../pg');
+const { headers } = require('../utils');
 const warmer = require('lambda-warmer');
 
 module.exports.handler = async (event, context) => {
   if (await warmer(event)) {
-    console.log('------ [artlocal.handler] warmed ------');
+    console.log('artlocal warmed');
     return 'warmed';
   }
 
@@ -23,23 +24,14 @@ module.exports.handler = async (event, context) => {
     if (!response.rows) {
       return {
         statusCode: 404,
-        headers: {
-          'Access-Control-Allow-Headers': '*',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': '*',
-        },
+        headers: headers,
         body: JSON.stringify({ message: 'Art Local v1 Error' }),
-        isBase64Encoded: FALSE,
       };
     }
 
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': '*',
-      },
+      headers: headers,
       body: JSON.stringify({
         message: 'Art Local v1 - A Ok!',
       }),
@@ -48,11 +40,7 @@ module.exports.handler = async (event, context) => {
     console.error(error);
     return {
       statusCode: 500,
-      headers: {
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': '*',
-      },
+      headers: headers,
       body: JSON.stringify({ message: 'Art Local v1 Error', error }),
     };
   }
