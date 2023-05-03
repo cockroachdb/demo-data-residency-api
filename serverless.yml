@@ -40,7 +40,7 @@ functions:
   api:
     handler: v1/index.handler
     memorySize: 128
-    timeout: 30
+    timeout: 6
     maximumEventAge: 7200
     maximumRetryAttempts: 1
     events:
@@ -51,7 +51,7 @@ functions:
   gallery:
     handler: v1/gallery.handler
     memorySize: 128
-    timeout: 30
+    timeout: 6
     maximumEventAge: 7200
     maximumRetryAttempts: 1
     events:
@@ -69,7 +69,7 @@ functions:
   user:
     handler: v1/user.handler
     memorySize: 128
-    timeout: 30
+    timeout: 6
     maximumEventAge: 7200
     maximumRetryAttempts: 1
     events:
@@ -87,7 +87,7 @@ functions:
   artlocal:
     handler: v1/artlocal.handler
     memorySize: 128
-    timeout: 30
+    timeout: 6
     maximumEventAge: 7200
     maximumRetryAttempts: 1
     events:
@@ -105,7 +105,7 @@ functions:
   artglobal:
     handler: v1/artglobal.handler
     memorySize: 128
-    timeout: 30
+    timeout: 6
     maximumEventAge: 7200
     maximumRetryAttempts: 1
     events:
@@ -123,7 +123,7 @@ functions:
   artuser:
     handler: v1/artuser.handler
     memorySize: 128
-    timeout: 30
+    timeout: 6
     maximumEventAge: 7200
     maximumRetryAttempts: 1
     events:
