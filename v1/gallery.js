@@ -28,21 +28,24 @@ module.exports.handler = async (event, context) => {
       };
     }
 
-    const newResponse = response.rows.map((data) => {
-      const { user_id, username, local_last_update, local_values, global_values } = data;
+    const newResponse = response.rows
+      .map((data) => {
+        const { user_id, username, local_last_update, local_values, global_values } = data;
 
-      return {
-        user_id,
-        username,
-        local_last_update: new Date(local_last_update).toLocaleString('default', {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-        }),
-        local_values,
-        global_values,
-      };
-    });
+        return {
+          user_id,
+          username,
+          date: local_last_update,
+          local_last_update: new Date(local_last_update).toLocaleString('default', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          }),
+          local_values,
+          global_values,
+        };
+      })
+      .sort((a, b) => b.date - a.date);
 
     return {
       statusCode: 200,
