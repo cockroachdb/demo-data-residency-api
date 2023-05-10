@@ -623,6 +623,11 @@ clone@^1.0.2:
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==
 
+cloud-regions-country-flags@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/cloud-regions-country-flags/-/cloud-regions-country-flags-1.1.4.tgz#475d112173ab2bb1073cfacea700db6238d90613"
+  integrity sha512-mieXo6FdMHjjtyNPA6QNs+4fnpB+mFbVarMMoe2Iggw+1N5hR4c4vxdiIT2apXTu3YcpTFLqlu7YCC0k8E/2RQ==
+
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
@@ -1004,11 +1009,6 @@ fast-deep-equal@^3.1.1:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
-
-fast-geoip@^1.1.88:
-  version "1.1.88"
-  resolved "https://registry.yarnpkg.com/fast-geoip/-/fast-geoip-1.1.88.tgz#97c114bb904a1ce7ce6f48a70bd7faf2e284d1aa"
-  integrity sha512-rGBGyHTKwNtdXmlgX1IDaf0gskqzQRXR4EWFCuD6V4YSrAzhVZCS53kvKFECQkEylXd0I8rEPV7x4xhhRA4ymw==
 
 fast-glob@^3.2.7, fast-glob@^3.2.9:
   version "3.2.12"

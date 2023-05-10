@@ -1,18 +1,17 @@
+const { fromProvider } = require('cloud-regions-country-flags');
+
 const { headers } = require('../utils');
-const geoip = require('fast-geoip');
 
-module.exports.handler = async (event, context) => {
-  const ip = event.requestContext.identity.sourceIp;
-  const geo = await geoip.lookup(ip);
-
+module.exports.handler = async () => {
   return {
     statusCode: 200,
     headers: headers,
     body: JSON.stringify({
-      message: 'Index v1 - A Ok!',
+      message: 'A Ok!',
+      statusCode: 200,
       region: process.env.AWS_REGION,
       cockroach_region: `aws-${process.env.AWS_REGION}`,
-      geo,
+      region_info: fromProvider(process.env.AWS_REGION, 'AWS'),
     }),
   };
 };

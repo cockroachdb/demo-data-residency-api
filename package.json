@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/cockroachdb/demo-data-residency-api#readme",
   "dependencies": {
-    "fast-geoip": "^1.1.88",
+    "cloud-regions-country-flags": "^1.1.4",
     "lambda-warmer": "^2.0.0",
     "serverless-postgres": "^2.0.2"
   },
